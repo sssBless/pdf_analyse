@@ -1,0 +1,3 @@
+[submodule "client/pdf-extractor"]
+    path = client/pdf-extractor
+    url = https://github.com/sssBless/pdf_analyse.git
