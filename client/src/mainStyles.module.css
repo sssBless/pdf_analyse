@@ -3,10 +3,13 @@ body {
   font-family: 'PT Sans', sans-serif;
   font-size: 1.1vw;
   padding: 3vw 0;
+  color: white;
+  margin: 0;
 }
 
 .wrapper {
-  width: 50vw;
+  width: 90%;
+  max-width: 50vw;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -15,20 +18,59 @@ body {
 }
 
 .btnContainer {
+  max-width: 80vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2vw;
 }
 
+.fileUploadWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  position: relative;
+}
+
+.fileUploadWrapper input[type='file'] {
+  position: absolute;
+  opacity: 0;
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.customFileButton {
+  padding: 0.7rem 1.5rem;
+  background-color: rgba(4, 195, 255, 0.35);
+  border: 0.2vw solid rgba(4, 195, 255, 1);
+  color: white;
+  font-size: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0px 4px 4px rgba(4, 195, 255, 0.25);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.customFileButton:hover {
+  box-shadow: 0px 6px 8px rgba(4, 195, 255, 0.35);
+}
+
+.selectedFileName {
+  margin-left: 2vw;
+  font-size: 1.5rem;
+  color: lightgrey;
+}
+
 .btnContainer button {
-  padding: 0.5vw 1vw;
+  padding: 0.5rem 1rem;
   width: max-content;
   border-radius: 0.75rem;
   background-color: rgba(4, 195, 255, 0.35);
   border-color: rgba(4, 195, 255, 1);
   color: white;
-  font-size: 2rem;
+  font-size: 1.5rem;
   border-width: 0.2vw;
   box-shadow: 0px 4px 4px rgba(4, 195, 255, 0.25);
   cursor: pointer;
@@ -46,46 +88,129 @@ body {
 }
 
 .btnContainer .lookingLet {
-  width: 20vw;
-  padding: 0.2vw;
+  width: 80%;
+  max-width: 20vw;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   border-color: lightgrey;
   border-width: 0.2vw;
-  font-size: 2rem;
+  font-size: 1.5rem;
   outline: none;
 }
 
-input::-webkit-file-upload-button {
-  padding: 0.5vw 1vw;
-  width: max-content;
-  border-radius: 0.75rem;
-  background-color: rgba(4, 195, 255, 0.35);
-  border-color: rgba(4, 195, 255, 1);
-  color: white;
-  font-size: 2rem;
-  border-width: 0.2vw;
-  box-shadow: 0px 4px 4px rgba(4, 195, 255, 0.25);
-  cursor: pointer;
-  transition: box-shadow 0.3s ease;
-  margin-right: 2vw;
-}
-
-.inpFile {
-  font-size: 2rem;
-}
-
 .resultText {
-  width: 50vw;
-  height: 30vw;
-  font-size: 2rem;
+  width: 100%;
+  max-width: 50vw;
+  height: 20vw;
+  font-size: 1.5rem;
   padding: 1vw 2vw;
+  background-color: #2a2a2a;
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
 }
 
 .barList {
   display: flex;
   flex-direction: column;
   align-items: start;
+  width: 100%;
 }
+
 h1 {
   color: white;
+  text-align: center;
+}
+
+.loader {
+  color: white;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.error {
+  color: red;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 1vw;
+}
+
+/* Адаптивные стили */
+@media (max-width: 1024px) {
+  .wrapper {
+    max-width: 80vw;
+  }
+
+  .btnContainer .lookingLet,
+  .resultText {
+    max-width: 80vw;
+    font-size: 1.2rem;
+  }
+
+  .btnContainer button,
+  .customFileButton {
+    font-size: 1.2rem;
+  }
+
+  .selectedFileName {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    max-width: 90vw;
+  }
+
+  .btnContainer .lookingLet,
+  .resultText {
+    max-width: 90vw;
+    font-size: 1rem;
+  }
+
+  .btnContainer button,
+  .customFileButton {
+    font-size: 1rem;
+  }
+
+  .selectedFileName {
+    font-size: 1rem;
+  }
+
+  .loader {
+    font-size: 1.5rem;
+  }
+
+  .error {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    width: 95vw;
+  }
+
+  .btnContainer .lookingLet,
+  .resultText {
+    max-width: 95vw;
+    font-size: 0.9rem;
+  }
+
+  .btnContainer button,
+  .customFileButton {
+    font-size: 0.9rem;
+  }
+
+  .selectedFileName {
+    font-size: 0.9rem;
+  }
+
+  .loader {
+    font-size: 1.2rem;
+  }
+
+  .error {
+    font-size: 1rem;
+  }
 }

@@ -1,77 +1,101 @@
 import { useState } from 'react';
 import styles from './mainStyles.module.css';
-import { Bar } from './Bar';
+import { Bar } from './components/Bar/Bar';
+import Api from './api/Api';
 
 export function MainPage() {
   const [letters, setLetters] = useState('');
   const [serverData, setServerData] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileChanged = (ev) => {
-    setSelectedFile(ev.target.files[0]);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
   };
 
-  async function fetchData() {
-    const formData = new FormData();
+  const handleTextChange = (event) => {
+    setLetters(event.target.value);
+  };
 
-    formData.append('pdfFile', selectedFile);
-    formData.append('letters', letters);
+  const fetchData = async () => {
+    if (!selectedFile || !letters) return;
 
-    const extractedText = await fetch('http://localhost:3001/extract-text', {
-      method: 'POST',
-      body: formData,
-    }).then((resp) => resp.json());
+    setIsLoading(true);
+    try {
+      const data = await Api.extractText(selectedFile, letters);
+      setServerData(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    setServerData(extractedText);
-  }
+  const renderBars = () => {
+    if (!serverData?.letters) return null;
+
+    return Object.keys(serverData.letters).map((key) => (
+      <Bar
+        key={key}
+        id={key}
+        label={key}
+        percentage={serverData.letters[key] / serverData.letterCounter}
+        maxWidth={1000}
+      />
+    ));
+  };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.btnContainer}>
-        <input
-          type='file'
-          className={styles.inpFile}
-          onChange={handleFileChanged}
-          accept='application/pdf'
-        />
+        <div className={styles.fileUploadWrapper}>
+          <label className={styles.customFileButton} htmlFor='fileUpload'>
+            Выберите файл
+          </label>
+          <input
+            id='fileUpload'
+            type='file'
+            className={styles.inpFile}
+            onChange={handleFileChange}
+            accept='application/pdf'
+          />
+          <span className={styles.selectedFileName}>
+            {selectedFile ? selectedFile.name : 'Файл не выбран'}
+          </span>
+        </div>
+
         <input
           type='text'
           value={letters}
           className={styles.lookingLet}
           placeholder='Введите искомые буквы...'
-          onInput={(e) => setLetters(e.target.value)}
+          onChange={handleTextChange}
         />
+
         <button
           type='button'
           className={styles.bntUpload}
           onClick={fetchData}
-          disabled={!selectedFile}
+          disabled={!selectedFile || isLoading}
         >
-          Обработать данные
+          {isLoading ? 'Обработка...' : 'Обработать данные'}
         </button>
       </div>
 
-      <div className={styles.barList}>
-        {serverData && <h1>Общее число букв: {serverData.letterCounter}</h1>}
-        {serverData &&
-          serverData.letters &&
-          Object.keys(serverData.letters).map((key) => (
-            <Bar
-              key={key}
-              id={key}
-              label={key}
-              percentage={serverData.letters[key] / serverData.letterCounter}
-              maxWidth={1000}
-            />
-          ))}
-      </div>
+      {isLoading && <div className={styles.loader}>Загрузка...</div>}
 
       <textarea
         className={styles.resultText}
         placeholder='Ваш PDF текст будет располагаться здесь...'
         value={serverData?.extractedText || ''}
         readOnly
-      ></textarea>
+      />
+
+      <div className={styles.barList}>
+        {serverData && <h1>Общее число букв: {serverData.letterCounter}</h1>}
+        {renderBars()}
+      </div>
     </div>
   );
 }
