@@ -1,0 +1,22 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2vw;
+}
+
+.barLabel {
+  color: white;
+  font-size: 3rem;
+  margin: 1vw 0;
+}
+
+.bar {
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  padding: 0 3vw;
+}
